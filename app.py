@@ -15,13 +15,13 @@ def upload_form():
 
 @app.route('/', methods=['POST'])
 def upload_image():
-	width = request_form(width)
-	height = request_form(height)
+	width = int(request.form['width'])
+	height = int(request.form['height'])
 	image_file = request.files['file']
-	filename = image_filename(image_file.filename)
+	filename = secure_filename(image_file.filename)
 	image_file.save(os.path.join('static/', filename))
 	image = Image.open(image_file)
-	image.thubnail(width, height)
+	image.thumbnail((width, height))
 	image.save(os.path.join('static/', filename))
 
 	return render_template('upload.html', filename=filename)
